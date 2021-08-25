@@ -6,10 +6,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const PrettierPlugin = require('prettier-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 
+const isProd = process.env.NODE_ENV == 'production';
 const paths = require('./paths')
 const plugins = require('./plugins')
 const rules = require('./rules')
-if (process.env.NODE_ENV !== 'production') {
+if (!isProd) {
   plugins.push(
     // Generates an HTML file from a template
     // Generates deprecation warning: https://github.com/jantimon/html-webpack-plugin/issues/1501
@@ -23,7 +24,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 module.exports = {
   // Where webpack looks to start building the bundle
-  entry: [paths.src + '/index.js'],
+  entry: [ `${paths.src}${isProd?'/index.js':'/test.js'}`],
 
   // Where webpack outputs the assets and bundles
   output: {
